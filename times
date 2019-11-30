@@ -2,14 +2,24 @@
 
 set -e
 
+BASE=$(dirname $0)
 DATE=$(date '+%F')
 TIME=$(date '+%H%M%S')
 
 PARKRUN_DATA=${PARKRUN_DATA:-$HOME/parkrun/data}
+FILE="parkrun_timer_$DATE-$TIME.txt"
 
 mkdir -p "${PARKRUN_DATA}/${DATE}"
 
-echo "*** Go to UPLOAD and press Start ***"
-./get-times.py | ./format-times.pl >"${PARKRUN_DATA}/$DATE/times-$TIME"
+echo -n "Looking for timer..."
+while [ ! -c /dev/ttyUSB0 ]
+do
+	sleep 1
+	echo -n .
+done
+echo found
 
-echo "Done (saved to ${PARKRUN_DATA}/$DATE/times-$TIME)"
+echo "*** Go to UPLOAD and press Start ***"
+${BASE}/get-times.py | ${BASE}/format-times.pl >"${PARKRUN_DATA}/$DATE/$FILE"
+
+echo "Done (saved to ${PARKRUN_DATA}/$DATE/$FILE)"

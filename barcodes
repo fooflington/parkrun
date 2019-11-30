@@ -2,10 +2,12 @@
 
 set -e
 
+BASE=$(dirname $0)
 DATE=$(date '+%F')
 TIME=$(date '+%H%M%S')
 
 PARKRUN_DATA=${PARKRUN_DATA:-$HOME/parkrun/data}
+FILE="parkrun_barcode_$DATE-$TIME.txt"
 
 mkdir -p "${PARKRUN_DATA}/${DATE}"
 
@@ -17,6 +19,6 @@ do
 done
 echo found
 
-./get-barcodes.py | ./format-barcodes.pl >"${PARKRUN_DATA}/$DATE/barcodes-$TIME"
+${BASE}/get-barcodes.py | ${BASE}/format-barcodes.pl >"${PARKRUN_DATA}/$DATE/$FILE"
 
-echo "Done (saved to ${PARKRUN_DATA}/$DATE/barcodes-$TIME)"
+echo "Done (saved to ${PARKRUN_DATA}/$DATE/$FILE)"
