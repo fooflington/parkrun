@@ -7,6 +7,6 @@ PARKRUN_DATA=${PARKRUN_DATA:-$HOME/parkrun/data}
 
 mkdir -p "${PARKRUN_DATA}/${DATE}"
 
-./get-barcodes.py | ./format-barcodes.pl >"${PARKRUN_DATA}/$DATE/barcodes-$TIME"
+./get-times.py | ./format-times.pl >"${PARKRUN_DATA}/$DATE/times-$TIME"
 
 
