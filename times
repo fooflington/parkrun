@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DATE=$(date '+%F')
 TIME=$(date '+%H%M%S')
 
@@ -7,6 +9,7 @@ PARKRUN_DATA=${PARKRUN_DATA:-$HOME/parkrun/data}
 
 mkdir -p "${PARKRUN_DATA}/${DATE}"
 
+echo "*** Go to UPLOAD and press Start ***"
 ./get-times.py | ./format-times.pl >"${PARKRUN_DATA}/$DATE/times-$TIME"
 
-
+echo "Done (saved to ${PARKRUN_DATA}/$DATE/times-$TIME)"

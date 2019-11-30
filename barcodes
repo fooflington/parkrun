@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 DATE=$(date '+%F')
 TIME=$(date '+%H%M%S')
 
@@ -7,6 +9,14 @@ PARKRUN_DATA=${PARKRUN_DATA:-$HOME/parkrun/data}
 
 mkdir -p "${PARKRUN_DATA}/${DATE}"
 
+echo -n "Looking for scanner..."
+while [ ! -c /dev/ttyUSB0 ]
+do
+	sleep 1
+	echo -n .
+done
+echo found
+
 ./get-barcodes.py | ./format-barcodes.pl >"${PARKRUN_DATA}/$DATE/barcodes-$TIME"
 
-
+echo "Done (saved to ${PARKRUN_DATA}/$DATE/barcodes-$TIME)"
