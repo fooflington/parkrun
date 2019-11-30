@@ -3,27 +3,11 @@
 # Lawrence Billson, 2015, Creative Commons license
 #
 
-# We should kill any other python sessions
-system('killall -9 python 2> /dev/null');
-
-print "Upload data from the stopwatch now\n";
-$datain = `/www/cgi-bin/readserial.py`;
-print "Got the data\n";
-
-
-# Open a data file, print a headder
-#$time = time();
-# make it human readable
-$time = `date +%a-%b-%d-%H:%M:%S_junsd_stopwatch.txt`;
-$file = "/www/files/parkrun_timer\_$time";
-open(BARCODEFILE,">$file");
-
-
 $bogus = "02/07/2001";
-open(FOUT,"> $file");
-print FOUT "STARTOFEVENT,$bogus 00:00:00,junsd_stopwatch\n0,$bogus 00:00:00\n";
+print "STARTOFEVENT,$bogus 00:00:00,junsd_stopwatch\n0,$bogus 00:00:00\n";
 
-
+my $datain;
+$datain .= $_ while <>;
 
 # We've now got the binary data, in an encoded hex form, from the stop watch
 # We need now to split it into 2 byte blocks
@@ -70,8 +54,7 @@ foreach $pair (@groups) {
 			$min="00";
 			}
 
-		print "$place  time is $hour:$min:$sec --- $pair\n";
-		print FOUT "$place,$bogus $hour:$min:$sec,$hour:$min:$sec\n";
+		print "$place,$bogus $hour:$min:$sec,$hour:$min:$sec\n";
 		$place++;
 		}		
 		
@@ -80,5 +63,4 @@ foreach $pair (@groups) {
 
 # Fake stop time
 $min++;
-print FOUT "ENDOFEVENT,$bogus $hour:$min:$sec\n";
-close(FOUT);
+print "ENDOFEVENT,$bogus $hour:$min:$sec\n";
